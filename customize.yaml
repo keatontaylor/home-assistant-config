@@ -1,0 +1,70 @@
+#################################################################
+## Customizations
+#################################################################
+
+
+# Speed Test Renaming & Icons.
+sensor.speedtest_download:
+  friendly_name: 'Download Speed'   
+  icon: mdi:speedometer
+
+sensor.speedtest_upload:
+  friendly_name: 'Upload Speed'
+  icon: mdi:speedometer
+
+sensor.speedtest_ping:
+  friendly_name: 'Ping Time'
+  icon: mdi:speedometer
+
+# Roku Rename.
+media_player.roku_1gs3d4008651:
+  friendly_name: 'Livingroom Roku'
+
+# Projector Renaming & Icon.
+sensor.projectorstatus:
+  icon: mdi:projector
+  
+switch.projector:
+  friendly_name: 'Projector Power'  
+
+# Kitchen motion icons.
+sensor.fibaro_system_fgms001_motion_sensor_temperature_2:
+  friendly_name: 'Kitchen Temperature'
+  icon: mdi:temperature-fahrenheit
+
+sensor.fibaro_system_fgms001_motion_sensor_luminance_2:
+  friendly_name: 'Kitchen Lux'
+  icon: mdi:spotlight-beam
+
+
+# Test Sensor Icons.
+sensor.aeotec_zw100_multisensor_6_luminance_3:
+  friendly_name: 'Test Lux'
+  icon: mdi:spotlight-beam
+
+sensor.aeotec_zw100_multisensor_6_ultraviolet_3:
+  friendly_name: 'Test UltraViolet'
+  icon: mdi:sunglasses
+
+sensor.aeotec_zw100_multisensor_6_temperature_3:
+  friendly_name: 'Test Temperature'
+  icon: mdi:temperature-fahrenheit
+
+sensor.aeotec_zw100_multisensor_6_relative_humidity_3:
+  friendly_name: 'Test Humidity'
+  icon: mdi:water-percent
+
+sensor.morning_brightness:
+  icon: mdi:settings
+
+sensor.sunrise_brightness:
+  icon: mdi:settings
+
+sensor.sunset_brightness:
+  icon: mdi:settings
+
+sensor.bedtime_brightness:
+  icon: mdi:settings
+
+sensor.current_brightness:
+  icon: mdi:settings

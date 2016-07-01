@@ -1,0 +1,152 @@
+#################################################################
+## Groups
+#################################################################
+
+default_view:
+  view: yes
+  entities: 
+    - group.weather
+    - group.projector
+    - group.scenes
+    - media_player.roku_1gs3d4008651
+    - group.kitchen_sensor
+    - group.kitchen_lights
+    - group.bedroom_lights
+    - group.livingroom_lights
+    - group.test_sensor
+    - sun.sun
+
+Automation:
+  view: yes
+  entities:
+    - group.automation_control
+    - group.day_shifting_config
+    - group.auto_away_config
+    - group.test_group
+
+Day Shifting Config:
+  entities:
+    - input_boolean.disable_day_shifting
+    - sensor.current_brightness
+    - input_boolean.disable_morning_lights
+    - sensor.morning_brightness
+    - input_slider.dayshift_brightness_morning
+    - input_slider.dayshift_brightness_morning_transition
+    - input_boolean.disable_sunrise_lights
+    - sensor.sunrise_brightness
+    - input_slider.dayshift_brightness_sunrise
+    - input_slider.dayshift_brightness_sunrise_transition
+    - input_boolean.disable_sunset_lights
+    - sensor.sunset_brightness
+    - input_slider.dayshift_brightness_sunset
+    - input_slider.dayshift_brightness_sunset_transition
+    - input_boolean.disable_bedtime_lights
+    - sensor.bedtime_brightness
+    - input_slider.dayshift_brightness_bedtime
+    - input_slider.dayshift_brightness_bedtime_transition
+
+Auto Away Config:
+  entities:
+    - input_boolean.disable_autoaway_lights
+    - input_slider.autoaway_timeout
+
+Automation Control:
+  entities:
+    - input_boolean.disable_projector_lights
+    - input_boolean.disable_roku_lights
+    - input_boolean.disable_rainy_day
+    - input_boolean.disable_kitchen_motion_lights
+    - input_boolean.disable_tracker
+
+
+Network:
+  view: yes
+  entities:
+    - group.network_status
+
+Weather:
+  entities:
+    - sensor.weather_summary
+    - sensor.weather_temperature
+    - sensor.weather_apparent_temperature
+    - sensor.weather_wind_speed
+    - sensor.weather_humidity
+  
+Network Status:
+  entities:
+    - sensor.speedtest_download
+    - sensor.speedtest_upload
+    - sensor.speedtest_ping
+
+All LifX Lights:
+  entities:
+    - light.kitchen_light
+    - light.livingroom_main
+    - light.livingroom_lamp
+    - light.bedroom_lamp
+
+mainroom_lights:
+  entities:
+    - light.livingroom_lamp
+    - light.livingroom_main
+    - light.kitchen_light
+
+livingroom_lights:
+  name: 'Livingroom Lights'
+  entities:
+    - light.livingroom_lamp
+    - light.livingroom_main
+
+bedroom_lights:
+  name: 'Bedroom Lights'
+  entities:
+    - light.bedroom_lamp
+
+kitchen_lights:
+  name: 'Kitchen Lights'
+  entities:
+    - light.kitchen_light
+
+main_kitchen:
+  entities:
+    - light.kitchen_light
+    - light.livingroom_main
+
+projector:
+  entities:
+    - sensor.projectorstatus
+    - switch.projector
+
+scenes:
+  name: 'Scenes'
+  entities:
+    - scene.all_lights_on
+    - scene.all_lights_off
+    - scene.disable_all_automation
+    - scene.enable_all_automation
+
+Kitchen Sensor:
+  entities:
+    - sensor.fibaro_system_fgms001_motion_sensor_luminance_2
+    - sensor.fibaro_system_fgms001_motion_sensor_temperature_2
+    - sensor.kitchen_motion
+
+Test Sensor:
+  entities:
+    - sensor.aeotec_zw100_multisensor_6_luminance_3
+    - sensor.aeotec_zw100_multisensor_6_temperature_3
+    - sensor.aeotec_zw100_multisensor_6_relative_humidity_3
+    - sensor.aeotec_zw100_multisensor_6_ultraviolet_3
+    - sensor.test_motion
+
+Projector Lights:
+   entities:
+     - light.livingroom_main
+     - light.livingroom_lamp
+
+lights_ha:
+  entities:
+    - input_boolean.livingroom_main_ha
+    - input_boolean.livingroom_lamp_ha
+    - input_boolean.bedroom_lamp_ha
+

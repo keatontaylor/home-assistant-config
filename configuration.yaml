@@ -1,0 +1,131 @@
+#################################################################
+## Main Configuaration
+#################################################################
+
+homeassistant:
+  name: Apt 212
+  latitude: -REDACTED-
+  longitude: -REDACTED-
+  temperature_unit: F
+  time_zone: America/Chicago
+
+      ###########################################################
+      ## Customization Config
+      ###########################################################
+
+  customize: !include customize.yaml
+
+      ###########################################################
+      ## API & Web UI Password
+      ###########################################################
+
+http:
+  api_password: -REDACTED-
+
+      ###########################################################
+      ## Lifx Light Config
+      ###########################################################
+
+light:
+  platform: lifx
+
+      ###########################################################
+      ## MQTT Config
+      ###########################################################
+
+mqtt:
+  broker: -REDACTED-
+  port: -REDACTED-
+  client_id: home-assistant-1
+  keepalive: 60
+  username: -REDACTED-
+  password: -REDACTED-
+
+      ###########################################################
+      ## Device Tracker Conig
+      ###########################################################
+
+device_tracker:
+  - platform: owntracks
+    max_gps_accuracy: 200
+
+      ###########################################################
+      ## Notification System Conifg
+      ###########################################################
+
+notify:
+  - name: telegram
+    platform: telegram
+    api_key: -REDACTED-
+    chat_id: -REDACTED-
+
+      ###########################################################
+      ## Z-Wave Config
+      ###########################################################
+
+zwave:
+  usb_path: /dev/ttyACM0
+  config_path: /srv/hass/hass_venv/lib/python3.4/site-packages/libopenzwave-0.3.1-py3.4-linux-x86_64.egg/config
+
+      ###########################################################
+      ## SNMP Config
+      ###########################################################
+
+
+
+      ###########################################################
+      ## Customization Config
+      ###########################################################
+
+group: !include group.yaml
+
+      ###########################################################
+      ## Sensors Config
+      ###########################################################
+
+sensor: !include sensors.yaml
+
+      ###########################################################
+      ## Scenes Config
+      ###########################################################
+
+scene: !include scenes.yaml
+
+      ###########################################################
+      ## Automation  Configuration
+      ###########################################################
+
+automation: !include automation.yaml     
+
+      ###########################################################
+      ## Input Boolean & Slider Config
+      ###########################################################
+
+input_boolean: !include input_boolean.yaml
+
+
+input_slider: !include input_slider.yaml
+
+      ###########################################################
+      ## Other Stuff
+      ###########################################################
+
+switch:
+  platform: mqtt
+  name: "Projector"
+  command_topic: "gundam212LinkL/feeds/projectorState"
+  state_topic: "gundam212LinkL/feeds/projectorState/status"
+  payload_on: "1"
+  payload_off: "0"
+  qos: 0
+  retain: true
+
+history:
+frontend:
+logbook:
+sun:
+discovery:
+conversation:
+
+
+

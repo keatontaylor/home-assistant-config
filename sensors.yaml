@@ -1,0 +1,144 @@
+#################################################################
+## Sensors
+#################################################################
+
+    ###########################################################
+    ## Forecast.io
+    ###########################################################
+
+  - platform: forecast
+    api_key: -REDACTED-
+    monitored_conditions:
+      - summary
+      - temperature
+      - apparent_temperature
+      - wind_speed
+      - humidity
+
+    ###########################################################
+    ## Speedest.net
+    ###########################################################
+
+  - platform: speedtest
+    minute: 
+      - 0
+      - 30
+    monitored_conditions:
+      - ping
+      - download
+      - upload
+
+    ###########################################################
+    ## Master Switch.
+    ###########################################################
+
+  - platform: mqtt
+    state_topic: "gundam212LinkL/feeds/masterSwitchState"
+    name: 'Master Switch'
+    qos: 0
+
+    ###########################################################
+    ## Bedroom Switch.
+    ###########################################################
+
+  - platform: mqtt
+    state_topic: "gundam212LinkK/feeds/bedroomSwitchState"
+    name: 'Bedroom Switch'
+    qos: 0
+
+    ###########################################################
+    ## Projector State
+    ###########################################################
+
+  - platform: mqtt
+    state_topic: "gundam212LinkL/feeds/projectorState"
+    name: 'Projector State'
+    qos: 0
+
+  - platform: template
+    sensors:
+        projectorstatus:
+          friendly_name: 'Projector Status'
+          value_template: >-
+              {%- if is_state("sensor.projector_state", "0" ) and is_state("switch.projector", "on" ) %}
+                  Powering Off
+              {% elif is_state("sensor.projector_state", "1" ) and is_state("switch.projector", "on" ) %}
+                  On
+              {% else %}
+                  Off
+              {%- endif %}
+
+
+    ###########################################################
+    ## Kitchen Motion State
+    ###########################################################
+
+  - platform: template
+    sensors:
+        kitchen_motion:
+          friendly_name: 'Kitchen Motion'
+          value_template: >-
+              {%- if is_state("sensor.fibaro_system_fgms001_motion_sensor_burglar_2", "0" ) %}
+                  Inactive
+              {% elif is_state("sensor.fibaro_system_fgms001_motion_sensor_burglar_2", "8" ) %}
+                  Active
+              {% elif is_state("sensor.fibaro_system_fgms001_motion_sensor_burglar_2", "3" ) %}
+                  Tampered
+              {% else %}
+                  Sleeping
+              {%- endif %}
+
+
+    ###########################################################
+    ## Test Motion State
+    ###########################################################
+
+  - platform: template
+    sensors:
+        test_motion:
+          friendly_name: 'Test Motion'
+          value_template: >-
+              {%- if is_state("sensor.aeotec_zw100_multisensor_6_burglar_3", "0" ) %}
+                  Inactive
+              {% elif is_state("sensor.aeotec_zw100_multisensor_6_burglar_3", "8" ) %}
+                  Active
+              {% elif is_state("sensor.aeotec_zw100_multisensor_6_burglar_3", "3" ) %}
+                  Tampered
+              {% else %}
+                  Unknown
+              {%- endif %}
+
+
+    ###########################################################
+    ## Day Shift Current Levels for Web UI
+    ###########################################################
+
+  - platform: template
+    sensors:
+      morning_brightness:
+        friendly_name: 'Current Morning Brightness / Transition'
+        value_template: '{{ ((states.input_slider.dayshift_brightness_morning.state | int / 255)*100) | int }}% / {{ states.input_slider.dayshift_brightness_morning_transition.state }}s'
+
+  - platform: template
+    sensors:
+      sunrise_brightness:
+        friendly_name: 'Current Sunrise Brightness / Transition'
+        value_template: '{{ ((states.input_slider.dayshift_brightness_sunrise.state | int / 255)*100) | int }}% / {{ states.input_slider.dayshift_brightness_sunrise_transition.state }}s'
+
+  - platform: template
+    sensors:
+      sunset_brightness:
+        friendly_name: 'Current Sunset Brightness / Transition'
+        value_template: '{{ ((states.input_slider.dayshift_brightness_sunset.state | int / 255)*100) | int }}% / {{ states.input_slider.dayshift_brightness_sunset_transition.state }}s'
+
+  - platform: template
+    sensors:
+      bedtime_brightness:
+        friendly_name: 'Current Bedtime Brightness / Transition'
+        value_template: '{{ ((states.input_slider.dayshift_brightness_bedtime.state | int / 255)*100) | int }}% / {{ states.input_slider.dayshift_brightness_bedtime_transition.state }}s'
+
+  - platform: template
+    sensors:
+      current_brightness:
+        friendly_name: 'Current Day Shift Brightness'
+        value_template: '{{ ((states.input_slider.dayshift_current_brightness.state | int / 255)*100) | int }}%'

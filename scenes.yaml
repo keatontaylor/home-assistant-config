@@ -1,0 +1,55 @@
+#################################################################
+## Scenes
+#################################################################
+
+    ###########################################################
+    ## States: Scenes for states
+    ###########################################################
+
+  - name: All Lights Off
+    
+    entities: 
+      group.livingroom_lights: off
+      group.bedroom_lights: off
+      group.kitchen_lights: off
+
+  - name: All Lights On
+
+    entities:
+      group.livingroom_lights: on
+      group.bedroom_lights: on
+      group.kitchen_lights: on
+
+#  - name: Vacation (Add this later)
+
+
+    ###########################################################
+    ## Automtion Overrides
+    ###########################################################
+
+
+  - name: Disable All Automation
+    
+    entities:
+      input_boolean.disable_projector_lights: on
+      input_boolean.disable_roku_lights: on
+      input_boolean.disable_day_shifting: on
+      input_boolean.disable_rainy_day: on
+      input_boolean.disable_morning_lights: on
+      input_boolean.disable_afternoon_lights: on
+      input_boolean.disable_evening_lights: on
+      input_boolean.disable_bedtime_lights: on
+      input_boolean.disable_kitchen_motion_lights: on
+
+  - name: Enable All Automation
+
+    entities:
+      input_boolean.disable_projector_lights: off
+      input_boolean.disable_roku_lights: off
+      input_boolean.disable_day_shifting: off
+      input_boolean.disable_rainy_day: off
+      input_boolean.disable_morning_lights: off
+      input_boolean.disable_afternoon_lights: off
+      input_boolean.disable_evening_lights: off
+      input_boolean.disable_bedtime_lights: off
+      input_boolean.disable_kitchen_motion_lights: off

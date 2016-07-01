@@ -1,0 +1,85 @@
+#################################################################
+## Input Boolean: Variables for stored states
+#################################################################
+
+      ###########################################################
+      ## Disable Automations
+      ###########################################################
+
+  disable_projector_lights:
+    name: Projector Light Control Disabled
+    initial: off
+    icon: mdi:projector
+
+  disable_roku_lights:
+    name: Roku Light Control Disabled
+    initial: off
+    icon: mdi:projector-screen
+
+  disable_day_shifting:
+    name: Day Shifting Disabled
+    initial: off
+    icon: mdi:weather-sunset-up
+
+  disable_rainy_day:
+    name: Rainy Day Disabled
+    initial: off
+    icon: mdi:weather-rainy
+
+  disable_morning_lights:
+    name: Morning Disabled
+    initial: off
+    icon: mdi:weather-sunset-up
+
+  disable_sunrise_lights:
+    name: Sunrise Disabled
+    initial: off
+    icon: mdi:white-balance-sunny
+
+  disable_sunset_lights:
+    name: Sunset Disabled
+    initial: off
+    icon: mdi:weather-sunset-down
+
+  disable_bedtime_lights:
+    name: Bedtime Disabled
+    initial: off
+    icon: mdi:hotel
+
+  disable_kitchen_motion_lights:
+    name: Kitchen Motion Lights Disabled
+    initial: off
+    icon: mdi:food
+
+  disable_autoaway_lights:
+    name: Disable Auto Away Lights.
+    initial: off
+    icon: mdi:home-map-marker
+
+  disable_tracker:
+    name: Disable Location Tracking
+    initial: on
+    icon: mdi:map-marker
+
+      ###########################################################
+      ## Lights Stored States for Projector
+      ###########################################################
+
+  livingroom_main_pa:
+    initial: off
+
+  livingroom_lamp_pa:
+    initial: off
+
+      ###########################################################
+      ## States for Home/Away Lights
+      ###########################################################
+
+  livingroom_main_ha:
+    initial: off
+ 
+  livingroom_lamp_ha:
+    initial: off
+
+  bedroom_lamp_ha:
+    initial: off
