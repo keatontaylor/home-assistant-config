@@ -1,0 +1,56 @@
+  alarm_snooze_limit:
+    name: Alarm Snooze Limit
+    options:
+     - 1
+     - 2
+     - 3
+     - 4
+     - 5
+    initial: 3
+    icon: mdi:alarm-snooze
+
+  autoaway_timeout:
+    name: Auto Away Timeout
+    options:
+     - 30
+     - 60
+     - 90
+     - 120
+    initial: 60
+    icon: mdi:lock
+
+  download_threshold:
+    name: Download Notify Threshold
+    options:
+    - 90
+    - 95
+    - 100
+    - 105
+    - 110
+    - 120
+    initial: 100
+    icon: mdi:speedometer
+
+  upload_threshold:
+    name: Upload Notify Threshold 
+    options:
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    initial: 8
+    icon: mdi:speedometer
+
+  ping_threshold:
+    name: Ping Notify Threshold
+    options:
+    - 18
+    - 20
+    - 22
+    - 24
+    - 26
+    - 28
+    initial: 24
+    icon: mdi:speedometer

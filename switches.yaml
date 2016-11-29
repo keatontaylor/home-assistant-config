@@ -1,0 +1,11 @@
+#################################################################
+## Projector MQTT Switch
+#################################################################
+
+  - platform: mqtt
+    name: "Projector"
+    command_topic: "gundam212LinkL/feeds/projectorState"
+    state_topic: "gundam212LinkL/feeds/projectorState/status"
+    payload_on: "1"
+    payload_off: "0"
+    retain: true

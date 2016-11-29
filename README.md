@@ -2,22 +2,47 @@
 
 A copy of my home-assistant.io configuration.
 
-### List of Automations
-1) __Day Shifting__ - Controling the brightness of connected Lifx bulbs via the time of day and sunrise and sunset.
+**List of devices:**
 
-2) __Auto Away__ - Turns off lights when I leave my apartment while storing their state. If I return within one hour it will turn the lights back on that were on before I left. Otherwise it turns on the main livingroom light only.
+* [2 x Amazon Echo Dot](http://a.co/2VXsmqD)
+* [2 x LIFX Color 1000 BR30](http://a.co/7dqYzZx)
+* [2 x LIFX White 900 BR30](http://a.co/2Y11OyH)
+* [8 x LIFX White 800 A19](http://a.co/4z3xDqO)
+* [Aeotec MultiSensor 6](http://a.co/8DRpbBZ)
+* [Fibaro Motion Sensor](http://a.co/iLA5NCI)
+* [Aeotec z-stick](http://a.co/ahoCSXm)
+* [Roku](http://amzn.to/2dpn89c)
+* [Amazon Fire TV Stick](http://a.co/hO2j7Rt)
+* [LinkNode](http://a.co/418sNIw)
 
-3) __Projector/Roku Lighting__ - Dims specific lights based on the state of my projector which is controlled via an MQTT ESP8266. It also determines the state of my roku and will slowly dim the remaining lights when the roku beigns to play media.
+**Automations:**
 
-4) __Kitchen Motion__ - Controls the lights in my kitchen based on input from a Fibaro Multi-Sensor. Brightness level is determined by the time of day set by the Day Shifting automation.
+* Trigger Livingroom Lights from ESP8266 connected to physical switch.
+* Trigger Bedroom Lights from ESP8266 connected to physical switch.
+* Trigger Kitchen Lights via Fibaro motion sensor.
+* Trigger Closet Lights via Aeotec multisensor.
+* Save the state of the lights if I am away. If I return within an hour turn lights back to that state, otherwise turn on livingroom lights when I get home.
+* When Alexa Alarm goes off turn on the bedroom lamp.
+* If alarm is snoozed more than three times start flashing bedroom lamp.
+* Setup notifications for alexa flash breifing. If motion is triggered while away, tell me. If UPS goes onto battery power, tell me. If device goes off line, tell me.
 
-5) __Master/Bedroom Switch__ - Two physical swtiches wired to an MQTT ESP8266 that control the livingroom lights and bedroom lights without the need to open an app.
-
-### Design Choices
-I wanted to ensure that all automation tasks could be easily turned off, so the config also includes a great deal of input_boolen's and conditions to deal with disabling specific automation tasks. There is also a great deal of work that went into ensuring the ability to see the state of the system quickly via the Web UI. Sliders, sensor templates and input boolen's were all used to get the desired effect. 
-
-In the Day Shifting automations, there is a bunch of actions that deal with setting the brightness of the lights if they're off, this config code can be replaced once a method to change the state of the lights without turning them on is implimented. I am working on code for this here: [Add set_brightness as a service](https://github.com/home-assistant/home-assistant/pull/2335)
+**Alexa Flash Briefing:**
+* Weather - Tell me if I need a jacket/coat/umbrella
+* Traffic - Tell me traffic to school.
+* Events - Tell me my next calendar event.
+* Home Status - Notifications for states.
 
 ### Screenshots
 ![Screenshots](Default_View.PNG)
-![Screenshots](Automation_View.PNG)
+![Screenshots](Network_View.PNG)
+![Screenshots](Media_View.PNG)
+![Screenshots](Settings_View.PNG)
+
+
+#Todo List
+* Fix Lifx LAN API.
+* Create some ESP8266 motion sensors.
+* Brightness, hue, temperature light control depending on time of day and weather conditions.
+* Control projector via alexa. (I.E - "Alexa, play game of thrones")
+* Clean up alexa flash briefing code. 
+* Secure the server better.

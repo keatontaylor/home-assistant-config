@@ -2,10 +2,9 @@
 ## Customizations
 #################################################################
 
-
 # Speed Test Renaming & Icons.
 sensor.speedtest_download:
-  friendly_name: 'Download Speed'   
+  friendly_name: 'Download Speed'
   icon: mdi:speedometer
 
 sensor.speedtest_upload:
@@ -16,55 +15,87 @@ sensor.speedtest_ping:
   friendly_name: 'Ping Time'
   icon: mdi:speedometer
 
-# Roku Rename.
-media_player.roku_1gs3d4008651:
-  friendly_name: 'Livingroom Roku'
+sensor.fastcom_download:
+  friendly_name: 'fast.com DL'
+  icon: mdi:speedometer
 
-# Projector Renaming & Icon.
+# Projector Renaming & Icon. (May need changing)
 sensor.projectorstatus:
   icon: mdi:projector
-  
+
 switch.projector:
-  friendly_name: 'Projector Power'  
+  friendly_name: 'Projector Power'
+  emulated_hue: true
 
 # Kitchen motion icons.
-sensor.fibaro_system_fgms001_motion_sensor_temperature_2:
+sensor.fibaro_system_fgms001_motion_sensor_temperature_2_1:
   friendly_name: 'Kitchen Temperature'
   icon: mdi:temperature-fahrenheit
 
-sensor.fibaro_system_fgms001_motion_sensor_luminance_2:
+sensor.fibaro_system_fgms001_motion_sensor_luminance_2_3:
   friendly_name: 'Kitchen Lux'
   icon: mdi:spotlight-beam
 
-
-# Test Sensor Icons.
-sensor.aeotec_zw100_multisensor_6_luminance_3:
-  friendly_name: 'Test Lux'
+# Bedroom Sensor Icons.
+sensor.aeotec_zw100_multisensor_6_luminance_3_3:
+  friendly_name: 'Bedrooom Lux'
   icon: mdi:spotlight-beam
 
-sensor.aeotec_zw100_multisensor_6_ultraviolet_3:
-  friendly_name: 'Test UltraViolet'
-  icon: mdi:sunglasses
-
-sensor.aeotec_zw100_multisensor_6_temperature_3:
-  friendly_name: 'Test Temperature'
+sensor.aeotec_zw100_multisensor_6_temperature_3_1:
+  friendly_name: 'Bedroom Temperature'
   icon: mdi:temperature-fahrenheit
 
-sensor.aeotec_zw100_multisensor_6_relative_humidity_3:
-  friendly_name: 'Test Humidity'
+sensor.aeotec_zw100_multisensor_6_relative_humidity_3_5:
+  friendly_name: 'Bedroom Humidity'
   icon: mdi:water-percent
 
-sensor.morning_brightness:
-  icon: mdi:settings
+# Roku Rename
+media_player.roku_1gs3d4008651:
+  friendly_name: 'Livingroom Roku'
 
-sensor.sunrise_brightness:
-  icon: mdi:settings
+# Hue Rename and expose
+light.livingroom_lamp:
+  emulated_hue_name: "Living Room Lamp"
+  emulated_hue: true
+light.livingroom_main:
+  emulated_hue_name: "Living Room Main"
+  emulated_hue: true
+light.livingroom_entry:
+  emulated_hue_name: "Living Room Entry"
+  emulated_hue: true
+light.bedroom_lamp:
+  emulated_hue: true
+light.kitchen_light:
+  emulated_hue: true
+light.closet:
+  emulated_hue_name: "Closet Light"
+  emulated_hue: true
+input_boolean.alarmclock_snooze:
+  emulated_hue_name: "Snooze"
+  emulated_hue: true
 
-sensor.sunset_brightness:
-  icon: mdi:settings
+sensor.router:
+  icon: mdi:switch
 
-sensor.bedtime_brightness:
-  icon: mdi:settings
+sensor.wireless:
+  icon: mdi:router-wireless
 
-sensor.current_brightness:
-  icon: mdi:settings
+sensor.printer:
+  icon: mdi:printer
+
+sensor.bedroom_echo_dot:
+  icon: mdi:amazon
+
+sensor.livingroom_echo_dot:
+  icon: mdi:amazon
+
+sensor.bedroom_switch_esp8266:
+  icon: mdi:toggle-switch
+
+sensor.main_switch_esp8266:
+  icon: mdi:toggle-switch
+
+sensor.roku:
+  icon: mdi:play
+
+

@@ -1,131 +1,130 @@
-#################################################################
-## Main Configuaration
-#################################################################
+###########################################################
+## Global Values
+###########################################################
 
 homeassistant:
-  name: Apt 212
-  latitude: -REDACTED-
-  longitude: -REDACTED-
-  temperature_unit: F
+  latitude: !secret latitude
+  longitude: !secret longitude
+
+  unit_system: imperial
   time_zone: America/Chicago
 
-      ###########################################################
-      ## Customization Config
-      ###########################################################
+  name: Apartment
+
+  ###########################################################
+  ## Customization Config
+  ###########################################################
 
   customize: !include customize.yaml
 
-      ###########################################################
-      ## API & Web UI Password
-      ###########################################################
+###########################################################
+## API & Web UI Password
+###########################################################
 
 http:
-  api_password: -REDACTED-
+  api_password: !secret http_password
 
-      ###########################################################
-      ## Lifx Light Config
-      ###########################################################
+###########################################################
+## LiFX Config
+###########################################################
 
 light:
   platform: lifx
+  broadcast: 10.0.1.255
 
-      ###########################################################
-      ## MQTT Config
-      ###########################################################
+###########################################################
+## IFTTT Config
+###########################################################
+
+ifttt:
+  key: !secret ifttt_key
+
+###########################################################
+## Google Config
+###########################################################
+
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_secret
+
+###########################################################
+## MQTT Config (move to locally hosted server)
+###########################################################
 
 mqtt:
-  broker: -REDACTED-
-  port: -REDACTED-
+  broker: !secret mqtt_host
+  port: !secret mqtt_port
   client_id: home-assistant-1
   keepalive: 60
-  username: -REDACTED-
-  password: -REDACTED-
+  username: !secret mqtt_user
+  password: !secret mqtt_pass
 
-      ###########################################################
-      ## Device Tracker Conig
-      ###########################################################
+###########################################################
+## Device Tracker Conig
+###########################################################
 
 device_tracker:
   - platform: owntracks
     max_gps_accuracy: 200
 
-      ###########################################################
-      ## Notification System Conifg
-      ###########################################################
+  - platform: nmap_tracker
+    hosts: 10.0.1.1/24
 
-notify:
-  - name: telegram
-    platform: telegram
-    api_key: -REDACTED-
-    chat_id: -REDACTED-
-
-      ###########################################################
-      ## Z-Wave Config
-      ###########################################################
+###########################################################
+## Z-Wave Config
+###########################################################
 
 zwave:
   usb_path: /dev/ttyACM0
-  config_path: /srv/hass/hass_venv/lib/python3.4/site-packages/libopenzwave-0.3.1-py3.4-linux-x86_64.egg/config
+  config_path: /usr/local/lib/python3.5/site-packages/libopenzwave-0.3.1-py3.5-linux-x86_64.egg/config
 
-      ###########################################################
-      ## SNMP Config
-      ###########################################################
+###########################################################
+## UPS Config 
+###########################################################
 
+apcupsd:
+  host: 127.0.0.1
+  port: 3551
 
+###########################################################
+## Roku Config
+###########################################################
 
-      ###########################################################
-      ## Customization Config
-      ###########################################################
+media_player:
+  - platform: roku
+    host: 10.0.1.191
 
-group: !include group.yaml
+###########################################################
+## Emulated Hue for Alexa
+###########################################################
 
-      ###########################################################
-      ## Sensors Config
-      ###########################################################
+emulated_hue:
+  host_ip: 10.0.1.4
+  expose_by_default: false
 
-sensor: !include sensors.yaml
+###########################################################
+## Groups, Senors, Automations, Inputs, Scripts, Switches
+###########################################################
 
-      ###########################################################
-      ## Scenes Config
-      ###########################################################
-
-scene: !include scenes.yaml
-
-      ###########################################################
-      ## Automation  Configuration
-      ###########################################################
-
-automation: !include automation.yaml     
-
-      ###########################################################
-      ## Input Boolean & Slider Config
-      ###########################################################
-
+automation: !include automations.yaml
+group: !include groups.yaml
 input_boolean: !include input_boolean.yaml
-
-
+input_select: !include input_select.yaml
 input_slider: !include input_slider.yaml
+scene: !include scenes.yaml
+script: !include scripts.yaml
+sensor: !include sensors.yaml
+binary_sensor: !include binary_sensors.yaml
+switch: !include switches.yaml
+alexa: !include alexa.yaml
+panel_iframe: !include panel_iframe.yaml
 
-      ###########################################################
-      ## Other Stuff
-      ###########################################################
+###########################################################
+## Other Stuff
+###########################################################
 
-switch:
-  platform: mqtt
-  name: "Projector"
-  command_topic: "gundam212LinkL/feeds/projectorState"
-  state_topic: "gundam212LinkL/feeds/projectorState/status"
-  payload_on: "1"
-  payload_off: "0"
-  qos: 0
-  retain: true
-
+recorder:
 history:
-frontend:
 logbook:
 sun:
 discovery:
-conversation:
-
-
-

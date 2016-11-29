@@ -1,85 +1,65 @@
 #################################################################
-## Input Boolean: Variables for stored states
+## Input Boolean: Stored States Projector
 #################################################################
 
-      ###########################################################
-      ## Disable Automations
-      ###########################################################
-
-  disable_projector_lights:
-    name: Projector Light Control Disabled
-    initial: off
-    icon: mdi:projector
-
-  disable_roku_lights:
-    name: Roku Light Control Disabled
-    initial: off
-    icon: mdi:projector-screen
-
-  disable_day_shifting:
-    name: Day Shifting Disabled
-    initial: off
-    icon: mdi:weather-sunset-up
-
-  disable_rainy_day:
-    name: Rainy Day Disabled
-    initial: off
-    icon: mdi:weather-rainy
-
-  disable_morning_lights:
-    name: Morning Disabled
-    initial: off
-    icon: mdi:weather-sunset-up
-
-  disable_sunrise_lights:
-    name: Sunrise Disabled
-    initial: off
-    icon: mdi:white-balance-sunny
-
-  disable_sunset_lights:
-    name: Sunset Disabled
-    initial: off
-    icon: mdi:weather-sunset-down
-
-  disable_bedtime_lights:
-    name: Bedtime Disabled
-    initial: off
-    icon: mdi:hotel
-
-  disable_kitchen_motion_lights:
-    name: Kitchen Motion Lights Disabled
-    initial: off
-    icon: mdi:food
-
-  disable_autoaway_lights:
-    name: Disable Auto Away Lights.
-    initial: off
-    icon: mdi:home-map-marker
-
-  disable_tracker:
-    name: Disable Location Tracking
-    initial: on
-    icon: mdi:map-marker
-
-      ###########################################################
-      ## Lights Stored States for Projector
-      ###########################################################
-
   livingroom_main_pa:
+    name: livingroom_main_pa
     initial: off
 
   livingroom_lamp_pa:
+    name: livingroom_lamp_pa
     initial: off
 
-      ###########################################################
-      ## States for Home/Away Lights
-      ###########################################################
+  livingroom_entry_pa:
+    name: livingroom_entry_pa
+    initial: off
+
+#################################################################
+## Input Boolean: Stored States Auto Away
+#################################################################
 
   livingroom_main_ha:
+    name: livingroom_main_ha
     initial: off
- 
+
+  livingroom_entry_ha:
+    name: livingroom_entry_ha
+    initial: off
+
   livingroom_lamp_ha:
+    name: livingroom_lamp_ha
     initial: off
 
   bedroom_lamp_ha:
+    name: bedroom_lamp_ha
+    initial: off
+
+#################################################################
+## Input Boolean: Media Control
+#################################################################
+  hbo:
+    name: HBO
+    initial: off
+
+#################################################################
+## Input Boolean: Alarm
+#################################################################
+  alarm_triggered:
+    name: Alarm Triggered
+    initial: off
+
+  alarmclock_snooze:
+    name: Snooze
+    icon: mdi:alarm
+    initial: off
+
+#################################################################
+## Input Boolean: Motion While Away
+#################################################################
+  motion_away_trigger:
+    name: motion_away_trigger
+    initial: off
+
+  ups_power_trigger:
+    name: ups_power_trigger
     initial: off

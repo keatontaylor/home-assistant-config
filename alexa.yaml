@@ -1,0 +1,50 @@
+  flash_briefings:
+    events:
+      - title: Events
+        text: >-
+           Your next event, {{ states.calendar.keatonstaylorgmailcom.attributes.message }} starts 
+           {% if strptime(states.calendar.keatonstaylorgmailcom.attributes.start_time, '%Y-%m-%d %H:%M:%S').strftime('%d') == now().strftime('%d') %}
+               today 
+           {% else %}
+               {{ strptime(states.calendar.keatonstaylorgmailcom.attributes.start_time, '%Y-%m-%d %H:%M:%S').strftime('%A') }}
+           {% endif %} 
+           at {{ strptime(states.calendar.keatonstaylorgmailcom.attributes.start_time, '%Y-%m-%d %H:%M:%S').strftime('%I:%M%p') }}.
+    traffic:
+      - title: Traffic
+        text: >-
+           The drive to UT Dallas will be, {{ states.sensor.current_location_to_school.attributes.duration_in_traffic }}.
+    weather:
+      - title: Weather and Climate
+        text: >-
+           {{ states.sensor.dark_sky_hourly_summary.state }} The current temperature is,
+           {{states.sensor.dark_sky_apparent_temperature.state }} degrees.
+           {% if (states.sensor.dark_sky_daily_high_temperature.state | int)  < 68 %}
+             You should consider wearing a jacket.
+           {% elif (states.sensor.dark_sky_daily_low_temperature.state | int)  <  68 %}
+             You should consider wearing a jacket.
+           {% endif %}
+    homeassistant:
+      - title: Home Status
+        text: >-
+           Currently inside, it is, {{ states.sensor.fibaro_system_fgms001_motion_sensor_temperature_2_1.state | int }} degrees,
+           with a {{ states.sensor.aeotec_zw100_multisensor_6_relative_humidity_3_5.state }}% humidity.
+           {%- for item in states.group.network_devices.attributes.entity_id -%}
+               {%- if is_state(item, "Offline")  -%}
+                   {{item}} is Offline.
+               {%- endif %}
+           {% endfor %}
+           {% if (states.sensor.download_speed_mean.state | int ) < (states.input_select.download_threshold.state | int ) %}
+               The Download Speed is Below the Threshold.
+           {% endif %}
+           {% if (states.sensor.upload_speed_mean.state | int ) < (states.input_select.upload_threshold.state | int ) %}
+               The Upload Speed is Below the Threshold.
+           {% endif %} 
+           {% if (states.sensor.ping_time_mean.state | int ) > (states.input_select.ping_threshold.state | int ) %}
+               The Ping Time is Below the Threshold.
+           {% endif %}
+           {% if states.input_boolean.motion_away_trigger.state == 'on' %}
+               Your lights and/or motion sensors have been triggered while you were away.
+           {% endif %}
+           {% if states.input_boolean.ups_power_trigger.state == 'on' %}
+               The UPS has gone on battery power since your last time away.
+           {% endif %}

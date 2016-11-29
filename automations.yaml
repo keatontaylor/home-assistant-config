@@ -1,0 +1,355 @@
+##########################################################
+## Master Switch Control.
+##########################################################
+
+- alias: Master Switch Toggled
+
+  trigger:
+    platform: state
+    entity_id: sensor.master_switch
+
+  action:
+    service: light.toggle
+    entity_id: group.livingroom_lights
+
+
+##########################################################
+## Bedroom Switch Control.
+##########################################################
+
+- alias: Bedroom Switch Toggled
+
+  trigger:
+    platform: state
+    entity_id: sensor.bedroom_switch
+
+  action:
+    service: light.toggle
+    entity_id: group.bedroom_lights
+
+##########################################################
+## Kitchen Light Control
+##########################################################
+
+- alias: Kitchen motion triggered on
+
+  trigger:
+    platform: template
+    value_template: "{% if states('sensor.fibaro_system_fgms001_motion_sensor_burglar_2_10') | int == 8 or states('sensor.fibaro_system_fgms001_motion_sensor_burglar_2_10') | int == 3 %}true{% endif %}"
+
+  action:
+    service: light.turn_on
+    entity_id: light.kitchen_light
+
+- alias: Kitchen motion triggered off
+
+  trigger:
+    platform: state
+    entity_id: sensor.fibaro_system_fgms001_motion_sensor_burglar_2_10
+    to: '0'
+
+  action:
+    service: light.turn_off
+    entity_id: light.kitchen_light
+
+
+##########################################################
+## Closet Light Control
+##########################################################
+
+- alias: Closet motion triggered on
+
+  trigger:
+    platform: template
+    value_template: "{% if states('sensor.aeotec_zw100_multisensor_6_burglar_3_10') | int == 8 or states('sensor.aeotec_zw100_multisensor_6_burglar_3_10') | int == 3 %}true{% endif %}"
+
+  action:
+    service: light.turn_on
+    entity_id: light.closet
+
+- alias: Closet motion triggered off
+
+  trigger:
+    platform: state
+    entity_id: sensor.aeotec_zw100_multisensor_6_burglar_3_10
+    to: '0'
+
+  action:
+    service: light.turn_off
+    entity_id: light.closet
+
+
+##########################################################
+## Turn on HBO
+##########################################################
+
+- alias: Movie Time
+
+  trigger:
+    platform: state
+    entity_id: input_boolean.hbo 
+    to: 'on'
+
+  action:
+    - service: homeassistant.turn_on
+      entity_id: switch.projector
+    - service: media_player.select_source
+      entity_id: media_player.roku_1gs3d4008651
+      data:
+        source: 'HBO GO'
+    - service: homeassistant.turn_off
+      entity_id: input_boolean.hbo
+    - service: scene.turn_on
+      entity_id: scene.movie_time
+
+##########################################################
+## Auto Away Config
+##########################################################
+
+- alias: Turn off lights when away.
+
+  trigger:
+    platform: state
+    entity_id: device_tracker.gundam212iphone_destinyiphone
+    from: 'home'
+    to: 'not_home'
+
+  action:
+    - service_template: >
+        {% if is_state('light.livingroom_lamp', 'on') %}
+          homeassistant.turn_on
+        {% else %}
+          homeassistant.turn_off
+        {% endif %}
+      entity_id: input_boolean.livingroom_lamp_ha
+
+    - service_template: >
+        {% if is_state('light.livingroom_main', 'on') %}
+          homeassistant.turn_on
+        {% else %}
+          homeassistant.turn_off
+        {% endif %}
+      entity_id: input_boolean.livingroom_main_ha
+
+    - service_template: >
+        {% if is_state('light.bedroom_lamp', 'on') %}
+          homeassistant.turn_on
+        {% else %}
+          homeassistant.turn_off
+        {% endif %}
+      entity_id: input_boolean.bedroom_lamp_ha
+
+    - service_template: >
+        {% if is_state('light.livingroom_entry', 'on') %}
+          homeassistant.turn_on
+        {% else %}
+          homeassistant.turn_off
+        {% endif %}
+      entity_id: input_boolean.livingroom_entry_ha
+
+    - service: homeassistant.turn_off
+      entity_id: group.all_lifx_lights
+
+
+- alias: Return lights depending on timeframe since last on.
+
+  trigger:
+    platform: state
+    entity_id: device_tracker.gundam212iphone_destinyiphone
+    from: 'not_home'
+    to: 'home'
+
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.bedroom_lamp_ha', 'on') and ( as_timestamp(now()) - states.input_boolean.bedroom_lamp_ha.last_changed.timestamp()) < (states.input_select.autoaway_timeout.state | int * 60) %}
+          homeassistant.turn_on
+        {% else %}
+          homeassistant.turn_off
+        {% endif %}
+      data_template:
+        entity_id: >
+          {% if is_state('input_boolean.bedroom_lamp_ha', 'on') and ( as_timestamp(now()) - states.input_boolean.bedroom_lamp_ha.last_changed.timestamp()) < (states.input_select.autoaway_timeout.state | int * 60) %}
+            light.bedroom_lamp
+          {% else %}
+            input_boolean.bedroom_lamp_ha
+          {% endif %}
+    - service_template: >
+        {% if is_state('input_boolean.livingroom_main_ha', 'on') and ( as_timestamp(now()) - states.input_boolean.livingroom_main_ha.last_changed.timestamp()) < (states.input_select.autoaway_timeout.state | int * 60) %}
+          homeassistant.turn_on
+        {% elif ( as_timestamp(now()) - states.input_boolean.livingroom_main_ha.last_changed.timestamp()) >= (states.input_select.autoaway_timeout.state | int * 60) %}
+          homeassistant.turn_on
+        {% else %}
+          homeassistant.turn_off
+        {% endif %}
+      data_template:
+        entity_id: >
+          {% if is_state('input_boolean.livingroom_main_ha', 'on') and ( as_timestamp(now()) - states.input_boolean.livingroom_main_ha.last_changed.timestamp()) < (states.input_select.autoaway_timeout.state | int * 60) %}
+            light.livingroom_main
+          {% elif ( as_timestamp(now()) - states.input_boolean.livingroom_main_ha.last_changed.timestamp()) >= (states.input_select.autoaway_timeout.state | int * 60) %}
+            light.livingroom_main
+          {% else %}
+            input_boolean.livingroom_main_ha
+          {% endif %}
+    - service_template: >
+        {% if is_state('input_boolean.livingroom_lamp_ha', 'on') and ( as_timestamp(now()) - states.input_boolean.livingroom_lamp_ha.last_changed.timestamp()) < (states.input_select.autoaway_timeout.state | int * 60) %}
+          homeassistant.turn_on
+        {% elif ( as_timestamp(now()) - states.input_boolean.livingroom_lamp_ha.last_changed.timestamp()) >= (states.input_select.autoaway_timeout.state | int * 60) %}
+          homeassistant.turn_on
+        {% else %}
+          homeassistant.turn_off
+        {% endif %}
+      data_template:
+        entity_id: >
+          {% if is_state('input_boolean.livingroom_lamp_ha', 'on') and ( as_timestamp(now()) - states.input_boolean.livingroom_lamp_ha.last_changed.timestamp()) < (states.input_select.autoaway_timeout.state | int * 60) %}
+            light.livingroom_lamp
+          {% elif ( as_timestamp(now()) - states.input_boolean.livingroom_lamp_ha.last_changed.timestamp()) >= (states.input_select.autoaway_timeout.state | int * 60) %}
+            light.livingroom_lamp  
+          {% else %}
+            input_boolean.livingroom_lamp_ha
+          {% endif %}
+    - service_template: >
+        {% if is_state('input_boolean.livingroom_entry_ha', 'on') and ( as_timestamp(now()) - states.input_boolean.livingroom_entry_ha.last_changed.timestamp()) < (states.input_select.autoaway_timeout.state | int * 60) %}
+          homeassistant.turn_on
+        {% elif ( as_timestamp(now()) - states.input_boolean.livingroom_entry_ha.last_changed.timestamp()) >= (states.input_select.autoaway_timeout.state | int * 60) %}
+          homeassistant.turn_on
+        {% else %}
+          homeassistant.turn_off
+        {% endif %}
+      data_template:
+        entity_id: >
+          {% if is_state('input_boolean.livingroom_entry_ha', 'on') and ( as_timestamp(now()) - states.input_boolean.livingroom_entry_ha.last_changed.timestamp()) < (states.input_select.autoaway_timeout.state | int * 60) %}
+            light.livingroom_entry
+          {% elif ( as_timestamp(now()) - states.input_boolean.livingroom_entry_ha.last_changed.timestamp()) >= (states.input_select.autoaway_timeout.state | int * 60) %}
+            light.livingroom_entry
+          {% else %}
+            input_boolean.livingroom_entry_ha
+          {% endif %}
+
+##########################################################
+## Trigger Lamp Wakeup, Count Snoozes
+##########################################################
+ 
+- alias: Alarm Lamp Wakeup
+  trigger:
+    platform: state
+    entity_id: input_boolean.alarm_triggered
+    to: 'on'
+
+  action:
+    - service: input_slider.select_value
+      data_template:
+        entity_id: input_slider.alarm_snoozecount
+        value: '{{ (states.input_slider.alarm_snoozecount.state | int) + 1 }}'
+    - service: homeassistant.turn_off
+      entity_id: input_boolean.alarm_triggered
+    - service: light.turn_on
+      entity_id: light.bedroom_lamp
+      data:
+        brightness: 255
+        transition: 60
+
+##########################################################
+## If Snoozes is greater than set value
+##########################################################
+
+- alias: Snoozed Greater than Set Value
+  trigger:
+    platform: template
+    value_template: '{{ (states.input_slider.alarm_snoozecount.state | int) >= (states.input_select.alarm_snooze_limit.state | int ) }}'
+
+  action:
+    - service: homeassistant.turn_on
+      entity_id: input_boolean.alarmclock_snooze
+
+
+##########################################################
+## Turn off Snooze
+##########################################################
+
+- alias: Turn off Snooze.
+  trigger:
+    platform: state
+    entity_id: input_boolean.alarmclock_snooze
+    to: 'off'
+
+  action:
+    - service: light.turn_on
+      entity_id: light.bedroom_lamp
+
+    - service: input_slider.select_value
+      data_template:
+        entity_id: input_slider.alarm_snoozecount
+        value: '0'    
+
+##########################################################
+## Flash Lamp
+##########################################################
+
+- alias: Flash Lamp For Alarm
+  trigger:
+    platform: time
+    seconds: /2
+
+  condition:
+    condition: state
+    entity_id: input_boolean.alarmclock_snooze
+    state: 'on'
+
+  action:
+    service: light.toggle
+    entity_id: light.bedroom_lamp
+
+##########################################################
+## Reset Notifications when I leave
+##########################################################
+
+- alias: Reset notifications when I leave (hacky)
+
+  trigger:
+    platform: state
+    entity_id: device_tracker.gundam212iphone_destinyiphone
+    from: 'home'
+    to: 'not_home'
+    for: 
+      seconds: 10
+
+  action:
+    - service: homeassistant.turn_off
+      entity_id: input_boolean.motion_away_trigger
+    
+    - service: homeassistant.turn_off
+      entity_id: input_boolean.ups_power_trigger
+
+
+##########################################################
+## Detect if Motion/Lights Triggered While Away
+##########################################################
+
+- alias: Detect Motion Lights Triggered While Away
+  trigger:
+    platform: template
+    value_template: '{{ (states.group.all_lifx_lights.state == "on") }}'
+
+  condition:
+    condition: state
+    entity_id: device_tracker.gundam212iphone_destinyiphone
+    state: 'not_home'
+
+  action:
+    service: homeassistant.turn_on
+    entity_id: input_boolean.motion_away_trigger
+
+
+##########################################################
+## Detect if UPS switches to battery power.
+##########################################################
+
+- alias: Detect UPS Switch to Battery
+
+  trigger:
+    platform: state
+    entity_id: sensor.ups_transfer_count
+
+  action:
+    service: homeassistant.turn_on
+    entity_id: input_boolean.ups_power_trigger

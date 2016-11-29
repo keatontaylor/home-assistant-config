@@ -1,26 +1,58 @@
 #################################################################
-## Sensors
+## Dark Sky
 #################################################################
 
-    ###########################################################
-    ## Forecast.io
-    ###########################################################
-
-  - platform: forecast
-    api_key: -REDACTED-
+  - platform: darksky
+    api_key: !secret darksky_key
     monitored_conditions:
       - summary
+      - icon
+      - nearest_storm_distance
+      - nearest_storm_bearing
+      - precip_type
+      - precip_intensity
+      - precip_probability
       - temperature
       - apparent_temperature
+      - dew_point
       - wind_speed
+      - wind_bearing
+      - cloud_cover
       - humidity
+      - pressure
+      - visibility
+      - ozone
+      - minutely_summary
+      - hourly_summary
+      - daily_summary
+      - temperature_max
+      - temperature_min
+      - apparent_temperature_max
+      - apparent_temperature_min
+      - precip_intensity_max
 
-    ###########################################################
-    ## Speedest.net
-    ###########################################################
+#################################################################
+## Uniteruptable Power Supply
+#################################################################
+
+  - platform: apcupsd
+    resources:
+      - bcharge
+      - linev
+      - loadpct
+      - nominv
+      - nompower
+      - numxfers
+      - status
+      - timeleft
+      - tonbatt
+
+#################################################################
+## Speedtest.net and Fast.com
+#################################################################
 
   - platform: speedtest
-    minute: 
+    minute:
       - 0
       - 30
     monitored_conditions:
@@ -28,27 +60,22 @@
       - download
       - upload
 
-    ###########################################################
-    ## Master Switch.
-    ###########################################################
+#################################################################
+## Master and Bedroom MQTT Switch Sensor
+#################################################################
 
   - platform: mqtt
     state_topic: "gundam212LinkL/feeds/masterSwitchState"
     name: 'Master Switch'
-    qos: 0
-
-    ###########################################################
-    ## Bedroom Switch.
-    ###########################################################
 
   - platform: mqtt
     state_topic: "gundam212LinkK/feeds/bedroomSwitchState"
     name: 'Bedroom Switch'
-    qos: 0
 
-    ###########################################################
-    ## Projector State
-    ###########################################################
+
+###########################################################
+## Projector State
+###########################################################
 
   - platform: mqtt
     state_topic: "gundam212LinkL/feeds/projectorState"
@@ -68,77 +95,157 @@
                   Off
               {%- endif %}
 
-
-    ###########################################################
-    ## Kitchen Motion State
-    ###########################################################
+###########################################################
+## Kitchen Motion State
+###########################################################
 
   - platform: template
     sensors:
         kitchen_motion:
           friendly_name: 'Kitchen Motion'
           value_template: >-
-              {%- if is_state("sensor.fibaro_system_fgms001_motion_sensor_burglar_2", "0" ) %}
+              {%- if is_state("sensor.fibaro_system_fgms001_motion_sensor_burglar_2_10", "0" ) %}
                   Inactive
-              {% elif is_state("sensor.fibaro_system_fgms001_motion_sensor_burglar_2", "8" ) %}
+              {% elif is_state("sensor.fibaro_system_fgms001_motion_sensor_burglar_2_10", "8" ) %}
                   Active
-              {% elif is_state("sensor.fibaro_system_fgms001_motion_sensor_burglar_2", "3" ) %}
+              {% elif is_state("sensor.fibaro_system_fgms001_motion_sensor_burglar_2_10", "3" ) %}
                   Tampered
               {% else %}
                   Sleeping
               {%- endif %}
 
 
-    ###########################################################
-    ## Test Motion State
-    ###########################################################
+###########################################################
+## Closet Motion State
+###########################################################
 
   - platform: template
     sensors:
-        test_motion:
-          friendly_name: 'Test Motion'
+        closet_motion:
+          friendly_name: 'Closet Motion'
           value_template: >-
-              {%- if is_state("sensor.aeotec_zw100_multisensor_6_burglar_3", "0" ) %}
+              {%- if is_state("sensor.aeotec_zw100_multisensor_6_burglar_3_10", "0" ) %}
                   Inactive
-              {% elif is_state("sensor.aeotec_zw100_multisensor_6_burglar_3", "8" ) %}
+              {% elif is_state("sensor.aeotec_zw100_multisensor_6_burglar_3_10", "8" ) %}
                   Active
-              {% elif is_state("sensor.aeotec_zw100_multisensor_6_burglar_3", "3" ) %}
+              {% elif is_state("sensor.aeotec_zw100_multisensor_6_burglar_3_10", "3" ) %}
                   Tampered
               {% else %}
                   Unknown
               {%- endif %}
 
+###########################################################
+## Closet Motion State
+###########################################################
 
-    ###########################################################
-    ## Day Shift Current Levels for Web UI
-    ###########################################################
+  - platform: google_travel_time
+    name: Current Location to School
+    api_key: AIzaSyBJFhmQWjhZ3vAkcAWG_TWHox0vWxR5kd0
+    origin: device_tracker.gundam212iphone_destinyiphone
+    destination: "University of Texas at Dallas - Richardson, TX"
+
+###########################################################
+## Speedtest Statistics
+###########################################################
+
+  - platform: statistics
+    name: Download Speed
+    entity_id: sensor.speedtest_download
+  - platform: statistics
+    name: Upload Speed
+    entity_id: sensor.speedtest_upload
+  - platform: statistics
+    name: Ping Time
+    entity_id: sensor.speedtest_ping
+
+###########################################################
+## Template Sensors for Tracked Devices
+###########################################################
 
   - platform: template
     sensors:
-      morning_brightness:
-        friendly_name: 'Current Morning Brightness / Transition'
-        value_template: '{{ ((states.input_slider.dayshift_brightness_morning.state | int / 255)*100) | int }}% / {{ states.input_slider.dayshift_brightness_morning_transition.state }}s'
+        router:
+          friendly_name: 'Router'
+          value_template: >-
+              {%- if is_state("device_tracker.source", "home" ) %}
+                  Online
+              {%- else -%}
+                  Offline
+              {%- endif %}
 
   - platform: template
     sensors:
-      sunrise_brightness:
-        friendly_name: 'Current Sunrise Brightness / Transition'
-        value_template: '{{ ((states.input_slider.dayshift_brightness_sunrise.state | int / 255)*100) | int }}% / {{ states.input_slider.dayshift_brightness_sunrise_transition.state }}s'
+        wireless:
+          friendly_name: 'Wireless AP'
+          value_template: >-
+              {%- if is_state("device_tracker.wirelessinvertedio", "home" ) %}
+                  Online 
+              {%- else -%}
+                  Offline
+              {%- endif %}
 
   - platform: template
     sensors:
-      sunset_brightness:
-        friendly_name: 'Current Sunset Brightness / Transition'
-        value_template: '{{ ((states.input_slider.dayshift_brightness_sunset.state | int / 255)*100) | int }}% / {{ states.input_slider.dayshift_brightness_sunset_transition.state }}s'
+        printer:
+          friendly_name: 'Printer'
+          value_template: >-
+              {%- if is_state("device_tracker.printerinvertedio", "home" ) %}
+                  Online 
+              {%- else -%}
+                  Offline
+              {%- endif %}
 
   - platform: template
     sensors:
-      bedtime_brightness:
-        friendly_name: 'Current Bedtime Brightness / Transition'
-        value_template: '{{ ((states.input_slider.dayshift_brightness_bedtime.state | int / 255)*100) | int }}% / {{ states.input_slider.dayshift_brightness_bedtime_transition.state }}s'
+        bedroom_echo_dot:
+          friendly_name: 'Bedroom Echo Dot'
+          value_template: >-
+              {%- if is_state("device_tracker.kindle0ffb01ae2invertedio", "home" ) %}
+                  Online 
+              {%- else -%}
+                  Offline
+              {%- endif %}
 
   - platform: template
     sensors:
-      current_brightness:
-        friendly_name: 'Current Day Shift Brightness'
-        value_template: '{{ ((states.input_slider.dayshift_current_brightness.state | int / 255)*100) | int }}%'
+        livingroom_echo_dot:
+          friendly_name: 'Livingroom Echo Dot'
+          value_template: >-
+              {%- if is_state("device_tracker.kindle1c2b57cb9invertedio", "home" ) %}
+                  Online
+              {%- else -%}
+                  Offline
+              {%- endif %}
+
+  - platform: template
+    sensors:
+        bedroom_switch_esp8266:
+          friendly_name: 'Bedroom Switch ESP8266'
+          value_template: >-
+              {%- if is_state("device_tracker.linkkinvertedio", "home" ) %}
+                  Online
+              {%- else -%}
+                  Offline
+              {%- endif %}
+
+  - platform: template
+    sensors:
+        main_switch_esp8266:
+          friendly_name: 'Main Switch ESP8266'
+          value_template: >-
+              {%- if is_state("device_tracker.wizneteffeedinvertedio", "home" ) %}
+                  Online
+              {%- else -%}
+                  Offline
+              {%- endif %}
+
+  - platform: template
+    sensors:
+        roku:
+          friendly_name: 'Roku'
+          value_template: >-
+              {%- if is_state("device_tracker.np1gs3d4008651invertedio", "home" ) %}
+                  Online
+              {%- else -%}
+                  Offline
+              {%- endif %}
