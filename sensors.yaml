@@ -140,7 +140,7 @@
 
   - platform: google_travel_time
     name: Current Location to School
-    api_key: AIzaSyBJFhmQWjhZ3vAkcAWG_TWHox0vWxR5kd0
+    api_key: !secret google_api_key
     origin: device_tracker.gundam212iphone_destinyiphone
     destination: "University of Texas at Dallas - Richardson, TX"
 
